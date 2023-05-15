@@ -39,22 +39,36 @@ class FormularioDinamicoTrabajadores extends HTMLElement {
     nameInput.placeholder = "Name";
     nameInput.value = name;
 
+    const removeButton = document.createElement("button");
+    removeButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
+    removeButton.className = "btn btn-primary";
+    removeButton.setAttribute('data-id',index);
+    removeButton.setAttribute('data-action','delete');
+    removeButton.setAttribute("data-toggle","tooltip");
+    removeButton.setAttribute("data-placement","left");
+    removeButton.setAttribute("title","Remove student");
+    if(!name) removeButton.setAttribute("disabled", true);
+    removeButton.addEventListener("click", (e) => {
+      this.removeStudent(e.currentTarget);
+    });
+
     const saveButton = document.createElement("button");
     saveButton.innerHTML = '<i class="fa-solid fa-check"></i>';
-    saveButton.className = "btn btn-primary";
+    saveButton.className = "btn btn-primary mr-2";
     if(name) saveButton.setAttribute("disabled", true);
     saveButton.setAttribute("data-toggle","tooltip");
     saveButton.setAttribute("data-placement","left");
     saveButton.setAttribute("title","Create new worker");
     saveButton.addEventListener("click", (e) => {
-      this.addStudents(e.currentTarget);
+      this.addStudents(e.currentTarget, removeButton);
     });
+
 
     const inputGroup = document.createElement("div");
     inputGroup.className = "d-flex my-2";
     inputGroup.appendChild(nameInput);
     inputGroup.appendChild(saveButton);
-    // inputGroup.appendChild(removeButton);
+    inputGroup.appendChild(removeButton);
 
     // Agregar el inputGroup a la página o al componente web
     this.appendChild(inputGroup);
@@ -70,7 +84,7 @@ class FormularioDinamicoTrabajadores extends HTMLElement {
     });
   }
 
-  async addStudents(element) {
+  async addStudents(element, removeButton) {
     element.setAttribute("disabled", true);
 
     const u = document.querySelector("#collapseThree .result .left");
@@ -91,6 +105,52 @@ class FormularioDinamicoTrabajadores extends HTMLElement {
       h.innerText = `(${i}s)`;
     }).bind(this)();
     u.innerHTML = "Done!";
+
+    removeButton.removeAttribute("disabled");
+  }
+
+  async removeStudent(element) {
+    document.querySelectorAll("[data-action='delete']").forEach(button => {
+      button.setAttribute("disabled", true);
+    })
+
+    const u = document.querySelector("#collapseThree .result .left");
+    const h = document.querySelector("#collapseThree .result .right");
+
+    const i = await (async function (e) {
+      u.innerText = "Waiting...";
+      h.innerText = "";
+      const r = Date.now();
+      const student = await first_project_backend.deleteStudent(Number(element.dataset.id));
+      const i = (Date.now() - r) / 1e3;
+      h.innerText = `(${i}s)`;
+    }).bind(this)();
+    u.innerHTML = "Done!";
+
+
+
+    let workers = await first_project_backend.getStudents();
+    workers = workers.map((worker) => {
+      return {
+        ...worker,
+        homeworks: worker.homeworks.map((homework) => {
+          return {
+            ...homework,
+            dueDate: Number(homework.dueDate),
+            homeworkId: Number(homework.homeworkId),
+            weight: Number(homework.weight),
+          };
+        }),
+      };
+    });
+    console.log("🚀 ~ file: FormularioDinamicoTrabajadores.js:124 ~ FormularioDinamicoTrabajadores ~ removeStudent ~ workers:", workers)
+    const $workers = document.querySelector("#workers");
+    console.log("🚀 ~ file: FormularioDinamicoTrabajadores.js:139 ~ FormularioDinamicoTrabajadores ~ removeStudent ~ $workers:", $workers)
+    $workers.innerHTML = `
+    <formulario-dinamico-trabajadores initial-data=${JSON.stringify(
+      workers
+    )}></formulario-dinamico-trabajadores>
+    `
   }
 
   getFormValues() {

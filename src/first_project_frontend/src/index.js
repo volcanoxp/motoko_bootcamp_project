@@ -35,6 +35,7 @@ import "bootstrap";
   `;
 
   let workers = await first_project_backend.getStudents();
+  console.log("🚀 ~ file: index.js:38 ~ workers:", workers)
   if (workers.length)
     document
       .querySelector("#collapseThree")
@@ -65,25 +66,30 @@ import "bootstrap";
   const $createWorker = document.querySelector("#collapseThree #createWorker");
   const $assignButton = document.querySelector("#collapseFour form button");
 
-  if(assignedHomeworks) {
+  if (assignedHomeworks) {
+    document.querySelectorAll("[data-action='delete']").forEach(button => {
+      button.setAttribute("disabled", true);
+    });
+    
     $createButton.setAttribute("disabled", true);
     $createTask.setAttribute("disabled", true);
     $createWorker.setAttribute("disabled", true);
     $assignButton.setAttribute("disabled", true);
 
     $checklist.innerHTML = `
-      <line-progress initial-value="${countCompletedTasks(workers)}"></line-progress>
+      <line-progress initial-value="${countCompletedTasks(
+        workers
+      )}"></line-progress>
       <homework-table homeworks=${JSON.stringify(workers)}></homework-table>
     `;
 
     document
-    .querySelector("#collapseFour")
-    .setAttribute("class", "in collapse show");
+      .querySelector("#collapseFour")
+      .setAttribute("class", "in collapse show");
 
     document
-    .querySelector("#collapseFive")
-    .setAttribute("class", "in collapse show");
-
+      .querySelector("#collapseFive")
+      .setAttribute("class", "in collapse show");
   }
 })();
 
@@ -132,7 +138,18 @@ document
       h.innerText = `(${i}s)`;
     })();
     u.innerHTML = "Done!";
-    button.removeAttribute("disabled");
+    const $createButton = document.querySelector("#collapseOne form button");
+    const $createTask = document.querySelector("#collapseTwo #createTask");
+    const $createWorker = document.querySelector("#collapseThree #createWorker");
+    const $assignButton = document.querySelector("#collapseFour form button");
+    $createButton.setAttribute("disabled", true);
+    $createTask.setAttribute("disabled", true);
+    $createWorker.setAttribute("disabled", true);
+    $assignButton.setAttribute("disabled", true);
+
+    document.querySelectorAll("[data-action='delete']").forEach(button => {
+      button.setAttribute("disabled", true);
+    });
 
     let workers = await first_project_backend.getStudents();
     workers = workers.map((worker) => {
@@ -154,3 +171,28 @@ document
 
     return false;
   });
+
+  document.querySelector('#restart').addEventListener('click', async (e) => {
+    const button = e.currentTarget.querySelector("button");
+    button.setAttribute("disabled", true);
+
+    const u = e.currentTarget.querySelector(".result .left");
+    const h = e.currentTarget.querySelector(".result .right");
+
+    const i = await (async function (e) {
+      u.innerText = "Waiting...";
+      h.innerText = "";
+      const r = Date.now();
+      let resetHomework = await first_project_backend.resetHomework();
+      const i = (Date.now() - r) / 1e3;
+      h.innerText = `(${i}s)`;
+    })();
+    u.innerHTML = "Done!";
+    button.removeAttribute("disabled");
+    location.reload();
+  })
+
+
+  document.querySelector('#finish').addEventListener('click', (e) => {
+    document.querySelector('#msg').innerHTML = "Thank you ♥"
+  })

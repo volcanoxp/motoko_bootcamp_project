@@ -2,23 +2,212 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>first_project</title>
-    <base href="/" />
-    <link rel="icon" href="favicon.ico" />
+    <link rel="icobasen" href="favicon.ico" />
     <link type="text/css" rel="stylesheet" href="main.css" />
+    <link
+      href="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   </head>
   <body>
-    <main>
-      <img src="logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form action="#">
-        <label for="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting"></section>
-    </main>
+    <style>
+      #container {
+        margin: 20px;
+        width: 200px;
+        height: 200px;
+        position: relative;
+      }
+    </style>
+
+    <div class="container-fluid mt-3">
+      <div class="row">
+        <div class="col-md-12">
+          <div id="accordion" class="checkout">
+            <div class="panel checkout-step">
+              <div>
+                <span class="checkout-step-number">1</span>
+                <h4 class="checkout-step-title">
+                  <a
+                    role="button"
+                    data-toggle="collapse"
+                    data-parent="#accordion"
+                    href="#collapseOne"
+                  >
+                    Project creation</a
+                  >
+                </h4>
+              </div>
+              <div id="collapseOne" class="in collapse show">
+                <section>
+                  <form id="project">
+                    <div class="form-group">
+                      <label for="name">Project's name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        aria-describedby="nameHelp"
+                        placeholder="Mokoto Project"
+                      />
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fa-solid fa-diagram-project mr-2"></i
+                      ><span>Create</span>
+                    </button>
+                    <div class="result d-flex justify-content-between my-2">
+                      <div class="left"></div>
+                      <div class="right"></div>
+                    </div>
+                  </form>
+                  <a
+                    class="btn btn-outline-primary"
+                    role="button"
+                    data-toggle="collapse"
+                    data-parent="#accordion"
+                    href="#collapseTwo"
+                  >
+                    Continue
+                  </a>
+                </section>
+              </div>
+            </div>
+            <div class="panel checkout-step">
+              <div role="tab" id="headingTwo">
+                <span class="checkout-step-number">2</span>
+                <h4 class="checkout-step-title">
+                  <a
+                    class="collapsed"
+                    role="button"
+                    data-toggle="collapse"
+                    data-parent="#accordion"
+                    href="#collapseTwo"
+                  >
+                    Task creation
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse">
+                <div id="tasks"></div>
+                <div class="result d-flex justify-content-between my-2">
+                  <div class="left"></div>
+                  <div class="right"></div>
+                </div>
+                <a
+                  class="btn btn-outline-primary"
+                  role="button"
+                  data-toggle="collapse"
+                  data-parent="#accordion"
+                  href="#collapseThree"
+                >
+                  Continue
+                </a>
+              </div>
+            </div>
+            <div class="panel checkout-step">
+              <div role="tab" id="headingThree">
+                <span class="checkout-step-number">3</span>
+                <h4 class="checkout-step-title">
+                  <a
+                    class="collapsed"
+                    role="button"
+                    data-toggle="collapse"
+                    data-parent="#accordion"
+                    href="#collapseThree"
+                  >
+                    Creation of workers
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseThree" class="panel-collapse collapse">
+                <div id="workers"></div>
+                <div class="result d-flex justify-content-between my-2">
+                  <div class="left"></div>
+                  <div class="right"></div>
+                </div>
+                <a
+                  class="btn btn-outline-primary"
+                  role="button"
+                  data-toggle="collapse"
+                  data-parent="#accordion"
+                  href="#collapseFour"
+                >
+                  Continue
+                </a>
+              </div>
+            </div>
+
+            <div class="panel checkout-step">
+              <div role="tab" id="headingFour">
+                <span class="checkout-step-number">4</span>
+                <h4 class="checkout-step-title">
+                  <a
+                    class="collapsed"
+                    role="button"
+                    data-toggle="collapse"
+                    data-parent="#accordion"
+                    href="#collapseFour"
+                  >
+                    Task assignment
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseFour" class="panel-collapse collapse">
+                <form class="mt-2">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-shuffle mr-2"></i>
+                    <span>Assign tasks</span>
+                  </button>
+                  <div class="result d-flex justify-content-between my-2">
+                    <div class="left"></div>
+                    <div class="right"></div>
+                  </div>
+                </form>
+                <a
+                  class="btn btn-outline-primary"
+                  role="button"
+                  data-toggle="collapse"
+                  data-parent="#accordion"
+                  href="#collapseFive"
+                >
+                  Continue
+                </a>
+              </div>
+            </div>
+
+            <div class="panel checkout-step">
+              <div role="tab" id="headingFive">
+                <span class="checkout-step-number">5</span>
+                <h4 class="checkout-step-title">
+                  <a
+                    class="collapsed"
+                    role="button"
+                    data-toggle="collapse"
+                    data-parent="#accordion"
+                    href="#collapseFive"
+                  >
+                    Task checklist
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseFive" class="panel-collapse collapse">
+                <div id="checklist">
+                  <line-progress></line-progress>
+                  <homework-table></homework-table>
+                </div>
+                <div class="result d-flex justify-content-between my-2">
+                  <div class="left"></div>
+                  <div class="right"></div>
+                </div>
+                <button type="button" class="btn btn-primary">Finish</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
